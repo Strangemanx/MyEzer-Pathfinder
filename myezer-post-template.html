@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Myezer Services Post</title>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@700&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    width: 1080px;
+    height: 1080px;
+    overflow: hidden;
+    background: #111;
+  }
+
+  .post {
+    width: 1080px;
+    height: 1080px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Background image */
+  .bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* Dark gradient overlay — heavier at bottom for text legibility */
+  .overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.78) 0%,
+      rgba(0, 0, 0, 0.35) 50%,
+      rgba(0, 0, 0, 0.05) 100%
+    );
+  }
+
+  /* Circular floating image — top right */
+  .circle-wrap {
+    position: absolute;
+    top: 120px;
+    right: 80px;
+    width: 280px;
+    height: 280px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 5px solid rgba(255, 255, 255, 0.18);
+    box-shadow: 0 8px 40px rgba(0,0,0,0.45);
+  }
+
+  .circle-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Brand bar */
+  .brand-bar {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 480px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    padding: 0 60px;
+  }
+
+  .brand-rule {
+    flex: 1;
+    max-width: 140px;
+    height: 1.5px;
+    background: rgba(255, 255, 255, 0.65);
+  }
+
+  .brand-label {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: 6px;
+    color: rgba(255, 255, 255, 0.88);
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  /* Headline */
+  .headline {
+    position: absolute;
+    bottom: 80px;
+    left: 52px;
+    right: 52px;
+    font-family: 'Oswald', sans-serif;
+    font-weight: 700;
+    font-style: italic;
+    font-size: 118px;
+    line-height: 1.05;
+    color: #ffffff;
+    text-align: center;
+    text-shadow: 0 4px 24px rgba(0,0,0,0.4);
+    word-wrap: break-word;
+  }
+</style>
+</head>
+<body>
+<div class="post" id="post">
+
+  <!-- Background image (dynamic) -->
+  <img class="bg" id="bg-img" src="" alt="">
+
+  <!-- Gradient overlay -->
+  <div class="overlay"></div>
+
+  <!-- Circular floating image (dynamic) -->
+  <div class="circle-wrap">
+    <img id="circle-img" src="" alt="">
+  </div>
+
+  <!-- Fixed branding -->
+  <div class="brand-bar">
+    <div class="brand-rule"></div>
+    <div class="brand-label">Myezer Services</div>
+    <div class="brand-rule"></div>
+  </div>
+
+  <!-- Caption / headline (dynamic) -->
+  <div class="headline" id="headline"></div>
+
+</div>
+
+<script>
+  // Read URL parameters
+  const params = new URLSearchParams(window.location.search);
+
+  const bgUrl      = params.get('bg')      || '';
+  const circleUrl  = params.get('circle')  || '';
+  const caption    = params.get('caption') || '';
+
+  // Apply background image
+  const bgImg = document.getElementById('bg-img');
+  if (bgUrl) bgImg.src = bgUrl;
+
+  // Apply circle image
+  const circleImg = document.getElementById('circle-img');
+  if (circleUrl) circleImg.src = circleUrl;
+
+  // Apply caption — split into lines of ~3 words for the bold stacked look
+  const headlineEl = document.getElementById('headline');
+  if (caption) {
+    const words = caption.trim().split(/\s+/);
+    const lines = [];
+    for (let i = 0; i < words.length; i += 3) {
+      lines.push(words.slice(i, i + 3).join(' '));
+    }
+    headlineEl.innerHTML = lines.join('<br>');
+
+    // Auto-shrink font if caption is long
+    const len = words.length;
+    if (len > 9)       headlineEl.style.fontSize = '80px';
+    else if (len > 6)  headlineEl.style.fontSize = '96px';
+  }
+</script>
+</body>
+</html>
